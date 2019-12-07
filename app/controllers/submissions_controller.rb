@@ -17,29 +17,10 @@ class SubmissionsController < ApplicationController
   end
 
   def leaderboard
-    output = []
-    @subjects =  @current_user.is_admin ? Subject.all : Subject.where(group: @current_group)
-    users = User.all
-    if !@users.empty?
-      users_groups = @users.group_by { |user| user.group.name }
-      # return subject_groups
-      users_groups.each do |group_name, users|
-        group_output = {group_name: group_name}
-        group_subjects = []
-        users.each do |subject|
-          assessments = Assessment.where(subject_id: subject[:id]).select(:id, :date, :nihss, :fma, :wmft, :sis, :mrs, :mas, :mmt, :barthel, :arm, :moca, :mal, :moca_alternate, :user_id, :comments)
-          if !assessments.empty?
-            record = {subject_name: subject[:name]}
-            record[:assessments] = assessments
-            group_subjects.push(record)
-          end
-        end
-        group_output[:subjects] = group_subjects
-        output.push(group_output)
-      end
-
-    end
-    output
+    groups = Group.all
+    groups = groups.select {|group| !group.best_submission.nil?}
+    groups = groups.sort_by {|group| -group.best_submission.score}
+    render json: groups.as_json, status: :ok
   end
 
 

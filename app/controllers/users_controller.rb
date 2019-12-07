@@ -18,10 +18,11 @@ class UsersController < ApplicationController
 	def create
 		user = User.new(request_params)
 		user.group = @group
-		if params[:user][:authentication_code] != @group.authentication_code
-			render json: { errors: ['Invalid authentication token. Please contact Prof. Sook Liew'] }, status: :unprocessable_entity
-			return
-		end
+    # Uncomment this when you want to authenticate using group tokens
+		# if params[:user][:authentication_code] != @group.authentication_code
+		# 	render json: { errors: ['Invalid authentication token. Please contact Prof. Sook Liew'] }, status: :unprocessable_entity
+		# 	return
+		# end
 		if user.valid? && user.save
 			render json: { user: user }, status: :created
 		else
@@ -52,8 +53,9 @@ class UsersController < ApplicationController
 	end
 
 	def set_group
-		@group = Group.where(name: params.require(:user).permit(:group)[:group]).first
-		render json: { errors: @user.errors }, status: :unprocessable_entity if @group.nil?
+		@group = Group.create(name: params.require(:user).permit(:email)[:email], authentication_code: params.require(:user).permit(:email)[:email])
+		# @group = Group.where(name: params.require(:user).permit(:group)[:group]).first
+		# render json: { errors: ['No such group found'] }, status: :unprocessable_entity if @group.nil?
 	end
 
 end

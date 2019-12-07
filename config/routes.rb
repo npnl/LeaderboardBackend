@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   resources :subjects
   resources :groups
 
+  get 'leaderboard' => 'submissions#leaderboard'
+
   post 'reset_password/request_token' => 'reset_password#request_token'
   post 'reset_password/update_password/:verification_token' => 'reset_password#update_password'
 

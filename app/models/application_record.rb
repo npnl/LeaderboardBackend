@@ -22,4 +22,11 @@ class ApplicationRecord < ActiveRecord::Base
       end
     end
   end
+
+  def as_json(options = {})
+    defaults = {:except => [:id, :created_at, :updated_at, :deleted_at] }
+    options.reverse_merge!(defaults)
+    h = super(options)
+    h
+  end
 end
