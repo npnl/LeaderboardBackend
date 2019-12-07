@@ -1,6 +1,6 @@
-# SCORE Assessment Forms
+# Leaderboard Backend
 
-The SCORE Assessment application consists of a backend written in Rails and the UI written using ReactJS.
+The Leaderboard application consists of a backend written in Rails and the UI written using ReactJS.
 
 ### Instructions to setup the development environment for the Rails App (backend).
 
