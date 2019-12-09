@@ -32,6 +32,7 @@ class Group < ApplicationRecord
     h[:user_count] = user_count
     h[:submissions] = submissions_count
     h[:best_submission] = best_submission
+    h.delete('authentication_code')
     h
   end
 end

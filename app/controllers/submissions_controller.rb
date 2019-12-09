@@ -20,7 +20,8 @@ class SubmissionsController < ApplicationController
     groups = Group.all
     groups = groups.select {|group| !group.best_submission.nil?}
     groups = groups.sort_by {|group| -group.best_submission.score}
-    render json: groups.as_json, status: :ok
+
+    render json: groups.as_json.each_with_index { |record, index| record[:rank] = index+1}, status: :ok
   end
 
 
